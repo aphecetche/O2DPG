@@ -34,6 +34,9 @@
           "type": "dataSamplingPolicy",
           "name": "mch-digits"
         },
+        "taskParameters": {
+          "Diagnostic": "false"
+        },
         "location": "local",
         "mergingMode": "delta",
         "localControl": "odc",
@@ -47,8 +50,8 @@
     },
     "checks": {
       "QcCheckMCHPhysics": {
-        "active": "true",
-        "className": "o2::quality_control_modules::muonchambers::PhysicsOccupancyCheck",
+        "active": "false",
+        "className": "o2::quality_control_modules::muonchambers::PhysicsCheck",
         "moduleName": "QcMuonChambers",
         "policy": "OnAll",
         "detectorName": "MCH",
@@ -56,9 +59,21 @@
           {
             "type": "Task",
             "name": "Digits",
-            "MOs": "all"
+            "MOs" : ["Occupancy_Elec", "MeanOccupancy"]
           }
         ]
+      },
+      "QcCheckMCHPhysicsOccupancy": {
+        "active": "false",
+        "className": "o2::quality_control_modules::muonchambers::PhysicsOccupancyCheck",
+        "moduleName": "QcMuonChambers",
+        "detectorName": "MCH",
+        "policy": "OnAny",
+        "dataSource": [{
+          "type": "Task",
+          "name": "Digits",
+          "MOs" : ["MeanOccupancyPerCycle"]
+        }]
       }
     }
   },
@@ -71,8 +86,8 @@
       "samplingConditions": [
         {
           "condition": "random",
-          "fraction": "0.5",
-          "seed": "1441"
+          "fraction": "0.1",
+          "seed": 1234
         }
       ],
       "blocking": "false"
