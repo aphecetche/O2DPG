@@ -1,0 +1,53 @@
+{
+  "qc": {
+    "config": {
+      "database": {
+        "implementation": "CCDB",
+        "host": "ali-qcdb.cern.ch:8083",
+        "username": "not_applicable",
+        "password": "not_applicable",
+        "name": "not_applicable"
+      },
+      "Activity": {
+        "number": "42",
+        "type": "2"
+      }
+    },
+    "tasks": {
+      "DecodingErrors": {
+        "active": "true",
+        "className": "o2::quality_control_modules::muonchambers::DecodingErrorsTask",
+        "moduleName": "QcMuonChambers",
+        "detectorName": "MCH",
+        "cycleDurationSeconds": "60",
+        "maxNumberCycles": "-1",
+        "dataSource": {
+          "type": "dataSamplingPolicy",
+          "name": "mch-rawdata"
+        },
+        "location": "local",
+        "localControl": "odc",
+        "localMachines": [
+          "localhost",
+          "epn"
+        ]
+      }
+    }
+  },
+  "dataSamplingPolicies": [
+    {
+      "id": "mch-rawdata",
+      "active": "true",
+      "machines": [],
+      "query": "TF:MCH/RAWDATA",
+      "samplingConditions": [
+        {
+          "condition": "random",
+          "fraction": "0.1",
+          "seed": "1441"
+        }
+      ],
+      "blocking": "false"
+    }
+  ]
+}
