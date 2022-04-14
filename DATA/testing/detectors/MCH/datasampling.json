@@ -1,0 +1,18 @@
+{
+        "dataSamplingPolicies": [
+                {
+                        "id": "mch-reco",
+                        "active": "true",
+                        "machines": [],
+                        "query": "digits:MCH/DIGITS/0;rofs:MCH/DIGITROFS/0;orbits:MCH/ORBITS/0",
+                        "outputs": "sd:MCH/S-DIGITS/0;sr:MCH/S-DIGITROFS/0;so:MCH/S-ORBITS/0",
+                        "samplingConditions": [
+                                {
+                                        "condition": "random",
+                                        "fraction": "0.1",
+                                        "seed": "22222"
+                                }
+                        ]
+                }
+        ]
+}
