@@ -1,0 +1,65 @@
+
+
+Executable = "/alice/cern.ch/user/l/laphecet/run3/2022/LHC22j/minv1/async_pass.sh";
+
+Arguments = "wn.xml --run-number $1 --period LHC22j --pass minv1 --beam-type pp"; 
+
+Packages =
+{
+  "VO_ALICE@O2PDPSuite::nightly-20220718-1",
+  "VO_ALICE@jq::v1.6-3"
+};
+
+Jobtag =
+{
+  "comment:MCH+MID reco w/ tracks QC and proto alignment (RUN $1)"
+};
+
+# all are needed
+Requirements = member(other.GridPartitions,"multicore_8");
+CPUCores = "8";
+MemorySize = "64GB";
+
+TTL = "18000";
+Price = "1";
+
+Validationcommand = "/alice/cern.ch/user/l/laphecet/run3/2022/LHC22j/minv1/validation.sh";
+
+InputFile =
+{
+    "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22j/minv1/check.C",
+    "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22j/minv1/setenv_extra.sh",
+    "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22j/minv1/qc-tracks.json",
+    "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22j/minv1/commonInput.tgz",
+};
+
+InputDataCollection = "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22j/minv1/$1/ctfs.xml,nodownload";
+Split = "se";
+SplitMaxInputFileNumber = "50";
+InputDataList = "wn.xml";
+InputDataListFormat = "xml-single";
+SplitArguments = {"wn.xml"};
+
+OutputDir = "/alice/cern.ch/user/l/laphecet/run3/2022/LHC22j/minv1/$1/#alien_counter_03i#";
+
+Output =
+{
+  "log_archive.zip:std*,*.log,*.json,*.ini@disk=1",
+  "root_archive.zip:QC.root,muontracks.root,mchtracks.root@disk=2"
+};
+
+FilesToCheck = "o2_tfidinfo.root mid-reco.root mchtracks.root mchclusters.root muontracks.root";
+
+JDLVariables =
+{
+  "Packages",
+  "OutputDir",
+  "FilesToCheck"
+};
+
+#Store ERROR_E jobs output
+OutputErrorE=
+{
+  "log_archive.zip:std*,*.log,*.json,*.ini@disk=1"
+};
+
