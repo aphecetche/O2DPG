@@ -10,6 +10,50 @@ if [[ ! -z $GEN_TOPO_QC_JSON_FILE ]]; then
   flock 101 || exit 1
 fi
 
+add_QC_JSON() {
+  echo "add_QC_JSON $1 $2"
+  if [[ ${2} =~ ^consul://.* ]]; then
+    TMP_FILENAME=$FETCHTMPDIR/$1.$RANDOM.$RANDOM.json
+    curl -s -o $TMP_FILENAME "http://alio2-cr1-hv-aliecs.cern.ch:8500/v1/kv/${2/consul:\/\//}?raw"
+    if [[ $? != 0 ]]; then
+      echo "Error fetching QC JSON $2"
+      exit 1
+    fi
+    JSON_FILES+=" $TMP_FILENAME"
+  else
+    JSON_FILES+=" ${2}"
+  fi
+  OUTPUT_SUFFIX+="-$1"
+  echo "OUTPUT_SUFFIX=${OUTPUT_SUFFIX}"
+}
+
+setup_qc_mch() {
+  [[ ! -z "$QC_JSON_MCH" ]] && return
+  base=$1
+  withReco=$2
+  withoutReco=$3
+  if has_detector MCH && has_processing_step MCH_RECO; then
+      QC_JSON_MCH=$base/$withReco
+  else
+    QC_JSON_MCH=$base/$withoutReco
+  fi
+  echo "setup_qc_mch QC_JSON_MCH=${QC_JSON_MCH}"
+}
+
+setup_qc_muon_match() {
+  [[ ! -z "$QC_JSON_MUON_MATCH" ]] && return
+  echo "setup_qc_muon_match TRACK_SOURCES=${TRACK_SOURCES} SYNCMODE=${SYNCMODE} EPNSYNCMODE=${EPNSYNCMODE}"
+  base=$1
+  mchmid=$2
+  if has_track_source "MCH-MID"; then
+     add_QC_JSON matchMCHMID $base/$mchmid
+  fi
+}
+
+JSON_FILES=
+OUTPUT_SUFFIX=
+QC_CONFIG=
+
 if [[ -z $QC_JSON_FROM_OUTSIDE && ! -z $GEN_TOPO_QC_JSON_FILE && -f $GEN_TOPO_QC_JSON_FILE ]]; then
   QC_JSON_FROM_OUTSIDE=$GEN_TOPO_QC_JSON_FILE
 elif [[ -z $QC_JSON_FROM_OUTSIDE ]]; then
@@ -105,6 +149,8 @@ elif [[ -z $QC_JSON_FROM_OUTSIDE ]]; then
     [[ -z "$QC_JSON_FDD" ]] && QC_JSON_FDD=$O2DPG_ROOT/DATA/production/qc-async/fdd.json
     [[ -z "$QC_JSON_EMC" ]] && QC_JSON_EMC=$O2DPG_ROOT/DATA/production/qc-async/emc.json
     [[ -z "$QC_JSON_MID" ]] && QC_JSON_MID=$O2DPG_ROOT/DATA/production/qc-async/mid.json
+    [[ -z "$QC_JSON_MCH" ]] && setup_qc_mch $O2DPG_ROOT/DATA/production/qc-async mch-full.json mch-digit-only.json
+    [[ -z "$QC_JSON_MUON_MATCH" ]] && setup_qc_muon_match $O2DPG_ROOT/DATA/production/qc-async mch-mid.json
     [[ -z "$QC_JSON_CPV" ]] && QC_JSON_CPV=$O2DPG_ROOT/DATA/production/qc-async/cpv.json
     [[ -z "$QC_JSON_PHS" ]] && QC_JSON_PHS=$O2DPG_ROOT/DATA/production/qc-async/phs.json
     [[ -z "$QC_JSON_TRD" ]] && QC_JSON_TRD=$O2DPG_ROOT/DATA/production/qc-async/trd.json
@@ -122,29 +168,15 @@ elif [[ -z $QC_JSON_FROM_OUTSIDE ]]; then
 
   FETCHTMPDIR=$(mktemp -d -t GEN_TOPO_DOWNLOAD_JSON-XXXXXX)
 
-  add_QC_JSON() {
-    if [[ ${2} =~ ^consul://.* ]]; then
-      TMP_FILENAME=$FETCHTMPDIR/$1.$RANDOM.$RANDOM.json
-      curl -s -o $TMP_FILENAME "http://alio2-cr1-hv-aliecs.cern.ch:8500/v1/kv/${2/consul:\/\//}?raw"
-      if [[ $? != 0 ]]; then
-        echo "Error fetching QC JSON $2"
-        exit 1
-      fi
-      JSON_FILES+=" $TMP_FILENAME"
-    else
-      JSON_FILES+=" ${2}"
-    fi
-    OUTPUT_SUFFIX+="-$1"
-  }
-
-  JSON_FILES=
-  OUTPUT_SUFFIX=
-  QC_CONFIG=
-
   # TOF matching
   if has_detector_qc TOF && [ ! -z "$QC_JSON_TOF_MATCH" ]; then
     add_QC_JSON matchTOF ${QC_JSON_TOF_MATCH}
   fi
+
+  # MUON matchings
+   if [[ ! -z "$QC_JSON_MUON_MATCH" ]]; then
+     add_QC_JSON matchMUON ${QC_JSON_MUON_MATCH}
+   fi
 
   for i in $(echo $LIST_OF_DETECTORS | sed "s/,/ /g"); do
     DET_JSON_FILE="QC_JSON_$i"

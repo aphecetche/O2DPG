@@ -1,0 +1,39 @@
+{
+    "qc": {
+        "tasks": {
+            "FwdTracks": {
+                "active": "true",
+                "className": "o2::quality_control_modules::muon::TracksTask",
+                "moduleName": "QcMUONCommon",
+                "detectorName": "GLO",
+                "cycleDurationSeconds": "240",
+                "maxNumberCycles": "-1",
+                "dataSource": {
+                    "type": "dataSamplingPolicy",
+                    "name": "mchmidtracks"
+                },
+                "taskParameters": {
+                    "maxTracksPerTF": "600",
+                    "GID": "MCH-MID"
+                }
+            }
+        },
+        "checks": {}
+    },
+    "dataSamplingPolicies": [
+        {
+            "id": "mchmidtracks",
+            "active": "true",
+            "machines": [],
+            "query": "trackMCH:MCH/TRACKS;trackMCHROF:MCH/TRACKROFS;trackMCHTRACKCLUSTERS:MCH/TRACKCLUSTERS;mchtrackdigits:MCH/CLUSTERDIGITS;trackMID:MID/TRACKS;trackMIDROF:MID/TRACKROFS;trackMIDTRACKCLUSTERS:MID/TRACKCLUSTERS;trackClMIDROF:MID/TRCLUSROFS;matchMCHMID:GLO/MTC_MCHMID;mchgeo:MCH/GEO/0?lifetime=condition&ccdb-path=GLO/Config/GeometryAligned",
+            "samplingConditions": [
+                {
+                    "condition": "random",
+                    "fraction": "1",
+                    "seed": "1441"
+                }
+            ],
+            "blocking": "false"
+        }
+    ]
+}
