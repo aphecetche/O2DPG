@@ -1,0 +1,82 @@
+Executable = "/alice/cern.ch/user/a/alidaq/LHC22e/apass1/alien_async_pass.sh";
+
+Packages =
+{
+  "VO_ALICE@O2PDPSuite::nightly-20220628-1",
+  "VO_ALICE@jq::v1.6-3"
+};
+
+Jobtag =
+{
+  "comment:LHC22e - async production for Pilot Beam, May/June 2022 pass 1, O2-2979"
+};
+
+LegoResubmitZombies = "1";
+
+# all are needed
+Requirements = member(other.GridPartitions,"multicore_8");
+CPUCores = "8";
+MemorySize = "64GB";
+
+TTL = "50000";
+Price = "11";
+
+# doesn't work (check with Chiara)
+#ProxyTTL = "1";
+
+#DirectAccess="true";
+
+Validationcommand = "/alice/cern.ch/user/a/alidaq/LHC22e/apass1/validation.sh";
+#FilesToCheck="mfttracks.root mid-reco.root o2clus_its.root o2_its_irframe.root o2match_itstpc.root o2match_tof_itstpc.root o2match_tof_tpc.root o2_primary_vertex.root o2reco_ft0.root o2reco_fv0.root o2trac_its.root tofclusters.root mftclusters.root trdcalibratedtracklets.root trdmatches_itstpc.root trdmatches_tpc.root o2_tfidinfo.root o2_secondary_vertex.root AO2D.root tpctracks.root QC.root tpc-native-clusters.root QC_production.json o2calib_tof.root AnalysisResults.root MFTAssessment.root";
+# Removed TRD from reconstructed detectors for apass1 (https://github.com/AliceO2Group/O2DPG/pull/278)
+#FilesToCheck="mfttracks.root mid-reco.root o2clus_its.root o2_its_irframe.root o2match_itstpc.root o2match_tof_itstpc.root o2match_tof_tpc.root o2_primary_vertex.root o2reco_ft0.root o2reco_fv0.root o2trac_its.root tofclusters.root mftclusters.root o2_tfidinfo.root o2_secondary_vertex.root AO2D.root tpctracks.root QC.root tpc-native-clusters.root QC_production.json o2calib_tof.root AnalysisResults.root MFTAssessment.root";
+# Removed AnalysisResults.root, due to crash in the MFT task
+FilesToCheck="mfttracks.root mid-reco.root o2clus_its.root o2_its_irframe.root o2match_itstpc.root o2match_tof_itstpc.root o2match_tof_tpc.root o2_primary_vertex.root o2reco_ft0.root o2reco_fv0.root o2trac_its.root tofclusters.root mftclusters.root o2_tfidinfo.root o2_secondary_vertex.root AO2D.root tpctracks.root QC.root tpc-native-clusters.root QC_production.json o2calib_tof.root MFTAssessment.root mchtracks.root mchclusters.root";
+
+InputFile =
+{
+  "LF:/alice/cern.ch/user/a/alidaq/LHC22e/apass1/commonInput.tgz",
+  "LF:/alice/cern.ch/user/a/alidaq/LHC22e/apass1/async_pass.sh",     # small diff wrt O2DPG
+  "LF:/alice/cern.ch/user/a/alidaq/LHC22e/apass1/selectSettings.sh"
+};
+
+InputDataCollection = "LF:/alice/data/2022/LHC22e/$1/raw/CTFs.xml";
+Split = "file";
+SplitArguments = {"#alienfilename#"};
+
+OutputDir = "/alice/data/2022/LHC22e/$1/apass1/#alienfilename/.root//#";
+
+Output =
+{
+  "log_archive.zip:std*,*.log,QC_production.json*,setenv_extra.sh,dpl-workflow.sh@disk=1",
+  #"root_archive.zip:mfttracks.root,mid-reco.root,o2clus_its.root,o2_its_irframe.root,o2match_itstpc.root,o2match_tof_itstpc.root,o2match_tof_tpc.root,o2_primary_vertex.root,o2reco_ft0.root,o2reco_fv0.root,o2trac_its.root,tofclusters.root,mftclusters.root,trdcalibratedtracklets.root,trdmatches_itstpc.root,trdmatches_tpc.root,o2_tfidinfo.root,o2_secondary_vertex.root,tpctracks.root,tpc-native-clusters.root,o2calib_tof.root,MFTAssessment.root@disk=1",
+  "root_archive.zip:mfttracks.root,mid-reco.root,o2clus_its.root,o2_its_irframe.root,o2match_itstpc.root,o2match_tof_itstpc.root,o2match_tof_tpc.root,o2_primary_vertex.root,o2reco_ft0.root,o2reco_fv0.root,o2trac_its.root,tofclusters.root,mftclusters.root,o2_tfidinfo.root,o2_secondary_vertex.root,tpctracks.root,tpc-native-clusters.root,o2calib_tof.root,MFTAssessment.root,mchtracks.root,mchclusters.root@disk=1",
+  "AO2D*.root@disk=3",
+  "QC.root@disk=2",
+  "analysis_archive.zip:AnalysisResults.root*,Analysis/*/AnalysisResults*.root@disk=1",
+#  "metrics_archive.zip:*metrics.json@disk=1",
+  "json_archive.tgz@disk=1"
+};
+
+LPMRawPass="1";
+LPMPassName="apass1";
+
+# Skip AnalysisQC, due to changes in multiplicity task
+RUNANALYSISQC="0";
+
+JDLVariables =
+{
+  "Packages",
+  "OutputDir",
+  "FilesToCheck",
+  "LPMPassName",
+  "RUNANALYSISQC"  
+};
+
+#Store ERROR_E jobs output
+OutputErrorE=
+{
+  "log_archive.zip:std*,*.log,*Metrics.json@disk=1"
+};
+
+#Workdirectorysize = {"10000MB"};
