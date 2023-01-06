@@ -1,4 +1,4 @@
-Executable = "/alice/cern.ch/user/l/laphecet/run3/2022/LHC22m/minv0/merge.sh";
+Executable = "/alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/merge.sh";
 
 Arguments = "stage$2.xml mchtracks.root muontracks.root QC.root";
 
@@ -20,15 +20,15 @@ MemorySize = "64GB";
 TTL = "3600";
 Price = "1";
 
-Validationcommand = "/alice/cern.ch/user/l/laphecet/run3/2022/LHC22m/minv0/validation.sh";
+Validationcommand = "/alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/validation.sh";
 
 InputFile =
 {
-    "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22m/minv0/merge.C",
-    "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22m/minv0/$1/stage$2.xml",
+    "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/merge.C",
+    "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/$1/stage$2.xml",
 };
 
-InputDataCollection = "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22m/minv0/$1/stage$2.xml,nodownload";
+InputDataCollection = "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/$1/stage$2.xml,nodownload";
 #Split = "se";
 #Split = "default";
 SplitMaxInputFileNumber = "20";
@@ -36,7 +36,7 @@ InputDataList = "wn.xml";
 InputDataListFormat = "xml-single";
 SplitArguments = {"wn.xml mchtracks.root muontracks.root QC.root"};
 
-OutputDir = "/alice/cern.ch/user/l/laphecet/run3/2022/LHC22m/minv0/$1/stage$2/#alien_counter_03i#";
+OutputDir = "/alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/$1/stage$2/#alien_counter_03i#";
 
 Output =
 {

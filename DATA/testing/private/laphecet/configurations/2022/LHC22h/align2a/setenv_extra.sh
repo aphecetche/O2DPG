@@ -21,6 +21,8 @@ if [[ $MODE == "remote" ]]; then
   export ARGS_EXTRA_PROCESS_o2_ctf_reader_workflow="--remote-regex \"^alien:///alice/data/.+\""
 fi
 
+ARGS_EXTRA_PROCESS_o2_ctf_reader_workflow="$ARGS_EXTRA_PROCESS_o2_ctf_reader_workflow --condition-remap file://.=GLO/Config/GeometryAligned"
+
 # checking for remapping
 if [[ $remappingITS == 1 ]] || [[ $remappingMFT == 1 ]]; then
   REMAPPING="--condition-remap \"http://alice-ccdb.cern.ch/RecITSMFT="
@@ -110,7 +112,7 @@ export CONFIG_EXTRA_PROCESS_o2_mft_reco_workflow="MFTTracking.forceZeroField=tru
 export ARGS_EXTRA_PROCESS_o2_mft_reco_workflow=" --run-assessment "
 
 # ad-hoc settings for MCH
-export CONFIG_EXTRA_PROCESS_o2_mch_reco_workflow="MCHClustering.lowestPadCharge=20;MCHClustering.defaultClusterResolution=0.4;MCHTracking.chamberResolutionX=0.4;MCHTracking.chamberResolutionY=0.4;MCHTracking.sigmaCutForTracking=7;MCHTracking.sigmaCutForImprovement=6;MCHDigitFilter.timeOffset=126"
+export CONFIG_EXTRA_PROCESS_o2_mch_reco_workflow="MCHClustering.lowestPadCharge=20;MCHClustering.defaultClusterResolution=0.2;MCHTracking.chamberResolutionX=0.2;MCHTracking.chamberResolutionY=0.2;MCHTracking.sigmaCutForTracking=5;MCHTracking.sigmaCutForImprovement=4;MCHDigitFilter.timeOffset=126"
 export ARGS_EXTRA_PROCESS_o2_mch_reco_workflow="--digits"
 
 # Enabling AOD

@@ -1,8 +1,8 @@
 
 
-Executable = "/alice/cern.ch/user/l/laphecet/run3/2022/LHC22m/minv0/async_pass.sh";
+Executable = "/alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/async_pass.sh";
 
-Arguments = "wn.xml --run-number $1 --period LHC22h --pass align2 --beam-type pp"; 
+Arguments = "wn.xml --run-number $1 --period LHC22h --pass align2a --beam-type pp"; 
 
 Packages =
 {
@@ -23,24 +23,24 @@ MemorySize = "64GB";
 TTL = "18000";
 Price = "1";
 
-Validationcommand = "/alice/cern.ch/user/l/laphecet/run3/2022/LHC22m/minv0/validation.sh";
+Validationcommand = "/alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/validation.sh";
 
 InputFile =
 {
-    "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22m/minv0/check.C",
-    "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22m/minv0/setenv_extra.sh",
-    "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22m/minv0/qc-tracks.json",
-    "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22m/minv0/commonInput.tgz",
+    "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/check.C",
+    "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/setenv_extra.sh",
+    "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/qc-tracks.json",
+    "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/commonInput.tgz",
 };
 
-InputDataCollection = "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22m/minv0/$1/ctfs.xml,nodownload";
+InputDataCollection = "LF:/alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/$1/ctfs.xml,nodownload";
 Split = "se";
 SplitMaxInputFileNumber = "50";
 InputDataList = "wn.xml";
 InputDataListFormat = "xml-single";
 SplitArguments = {"wn.xml"};
 
-OutputDir = "/alice/cern.ch/user/l/laphecet/run3/2022/LHC22m/minv0/$1/#alien_counter_03i#";
+OutputDir = "/alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/$1/#alien_counter_03i#";
 
 Output =
 {

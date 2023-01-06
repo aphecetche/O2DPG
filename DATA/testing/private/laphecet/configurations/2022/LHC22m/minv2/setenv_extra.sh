@@ -21,6 +21,8 @@ if [[ $MODE == "remote" ]]; then
   export ARGS_EXTRA_PROCESS_o2_ctf_reader_workflow="--remote-regex \"^alien:///alice/data/.+\""
 fi
 
+ARGS_EXTRA_PROCESS_o2_ctf_reader_workflow="$ARGS_EXTRA_PROCESS_o2_ctf_reader_workflow --condition-remap file://.=GLO/Config/GeometryAligned"
+
 # checking for remapping
 if [[ $remappingITS == 1 ]] || [[ $remappingMFT == 1 ]]; then
   REMAPPING="--condition-remap \"http://alice-ccdb.cern.ch/RecITSMFT="

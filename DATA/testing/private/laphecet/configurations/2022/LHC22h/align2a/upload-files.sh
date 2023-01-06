@@ -1,0 +1,11 @@
+alien_cp file:async_pass.jdl alien:///alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/async_pass.jdl
+alien_cp file:async_pass.sh alien:///alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/async_pass.sh
+alien_cp file:check.C alien:///alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/check.C
+alien_cp file:commonInput.tgz alien:///alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/commonInput.tgz
+alien_cp file:merge.C alien:///alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/merge.C
+alien_cp file:merge.jdl alien:///alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/merge.jdl
+alien_cp file:merge.sh alien:///alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/merge.sh
+alien_cp file:qc-tracks.json alien:///alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/qc-tracks.json
+alien_cp file:selectSettings.sh alien:///alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/selectSettings.sh
+alien_cp file:setenv_extra.sh alien:///alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/setenv_extra.sh
+alien_cp file:validation.sh alien:///alice/cern.ch/user/l/laphecet/run3/2022/LHC22h/align2a/validation.sh
