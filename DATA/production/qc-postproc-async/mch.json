@@ -1,0 +1,138 @@
+{
+    "qc": {
+        "config": {
+            "database": {
+                "implementation": "CCDB",
+                "host": "ccdb-test.cern.ch:8080"
+            },
+            "Activity": {
+                "number": "",
+                "provenance": "qc_async",
+                "periodName": "",
+                "passName": "apass1"
+            },
+            "monitoring": {
+                "url": "no-op://"
+            },
+            "consul": {
+                "url": ""
+            },
+            "conditionDB": {
+                "url": "ccdb-test.cern.ch:8080"
+            },
+            "postprocessing": {
+                "periodSeconds": "0.1"
+            },
+            "infologger": {
+                "": "Configuration of the Infologger (optional).",
+                "filterDiscardDebug": "true",
+                "": "Set to 1 to discard debug and trace messages (default: false)",
+                "filterDiscardLevel": "6",
+                "": "Message at this level or above are discarded (default: 21 - Trace)"
+            }
+        },
+        "postprocessing": {
+            "Digits": {
+                "active": "true",
+                "className": "o2::quality_control_modules::muonchambers::DigitsPostProcessing",
+                "moduleName": "QcMuonChambers",
+                "detectorName": "MCH",
+                "customization": [
+                    {
+                        "name": "FullHistos",
+                        "value": "0"
+                    },
+                    {
+                        "name": "ChannelRateMin",
+                        "value": "0.00001"
+                    },
+                    {
+                        "name": "ChannelRateMax",
+                        "value": "10"
+                    },
+                    {
+                        "name": "ReferenceTimeStamp",
+                        "value": "1677760098000"
+                    },
+                    {
+                        "name": "_ReferenceDate",
+                        "value": "2022/11/16 16:41:00"
+                    }
+                ],
+                "dataSources": [
+                    {
+                        "type": "repository",
+                        "path": "MCH/MO/Digits",
+                        "names": [
+                            "rate:Occupancy_Elec",
+                            "rate_signal:OccupancySignal_Elec",
+                            "orbits:DigitOrbitInTF",
+                            "orbits_signal:DigitSignalOrbitInTF"
+                        ],
+                        "reductorName": "o2::quality_control_modules::muonchambers::TH2ElecMapReductor",
+                        "moduleName": "QcMuonChambers"
+                    }
+                ],
+                "plots": [],
+                "initTrigger": [
+                    "userorcontrol"
+                ],
+                "updateTrigger": [
+                    "60sec"
+                ],
+                "updateTrigger_": [
+                    "newobject:qcdb:MCH/MO/MCHDigitsTask/Occupancy_Elec",
+                    "newobject:qcdb:MCH/MO/MCHDigitsTask/OccupancySignal_Elec",
+                    "newobject:qcdb:MCH/MO/MCHDigitsTask/DigitOrbitInTF",
+                    "newobject:qcdb:MCH/MO/MCHDigitsTask/DigitSignalOrbitInTF"
+                ],
+                "stopTrigger": [
+                    "userorcontrol"
+                ]
+            },
+            "Preclusters": {
+                "active": "false",
+                "className": "o2::quality_control_modules::muonchambers::PreclustersPostProcessing",
+                "moduleName": "QcMuonChambers",
+                "detectorName": "MCH",
+                "customization": [
+                    {
+                        "name": "FullHistos",
+                        "value": "0"
+                    },
+                    {
+                        "name": "ReferenceTimeStamp",
+                        "value": "1677760200000"
+                    },
+                    {
+                        "name": "_ReferenceDate",
+                        "value": "2022/11/16 16:41:00"
+                    }
+                ],
+                "dataSources": [
+                    {
+                        "type": "repository",
+                        "path": "MCH/MO/Preclusters",
+                        "names": [
+                            "eff:Pseudoeff_Elec",
+                            "clcharge:ClusterChargeHist",
+                            "clsize:ClusterSizeHist"
+                        ],
+                        "reductorName": "o2::quality_control_modules::muonchambers::TH2ElecMapReductor",
+                        "moduleName": "QcMuonChambers"
+                    }
+                ],
+                "plots": [],
+                "initTrigger": [
+                    "userorcontrol"
+                ],
+                "updateTrigger": [
+                    "60sec"
+                ],
+                "stopTrigger": [
+                    "userorcontrol"
+                ]
+            }
+        }
+    }
+}

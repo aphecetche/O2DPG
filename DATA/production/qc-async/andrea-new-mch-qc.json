@@ -1,0 +1,305 @@
+{
+  "qc": {
+    "config": {
+      "database": {
+        "implementation": "CCDB",
+        "host": "localhost:8080",
+        "host2": "ccdb-test.cern.ch:8080",
+        "username": "not_applicable",
+        "password": "not_applicable",
+        "name": "not_applicable",
+        "maxObjectSize": "12582912"
+      },
+      "conditionDB": {
+        "url": "alice-ccdb.cern.ch"
+      },
+      "Activity": {
+        "number": "42",
+        "type": "2"
+      }
+    },
+    "tasks": {
+      "MCHDigits": {
+        "active": "true",
+        "taskName": "Digits",
+        "className": "o2::quality_control_modules::muonchambers::DigitsTask",
+        "moduleName": "QcMuonChambers",
+        "detectorName": "MCH",
+        "cycleDurationSeconds": "60",
+        "maxNumberCycles": "-1",
+        "dataSource": {
+          "type": "direct",
+          "query": "digits:MCH/DIGITS",
+          "type2": "dataSamplingPolicy",
+          "name2": "digits"
+        },
+        "taskParameters": {
+          "Diagnostic": "false",
+          "OnCycle": "true"
+        },
+        "saveObjectsToFile": "qc-mch-digits.root",
+        "location": "remote"
+      },
+      "Rofs": {
+        "active": "true",
+        "className": "o2::quality_control_modules::muonchambers::RofsTask",
+        "moduleName": "QcMuonChambers",
+        "detectorName": "MCH",
+        "cycleDurationSeconds": "60",
+        "maxNumberCycles": "-1",
+        "dataSource": {
+          "type": "direct",
+          "query": "digits:MCH/DIGITS;rofs:MCH/DIGITROFS"
+        },
+        "taskParameters": {
+          "Diagnostic": "false"
+        },
+        "saveObjectsToFile": "qc-mch-rofs.root",
+        "location": "remote"
+      },
+      "FRofs": {
+        "active": "true",
+        "className": "o2::quality_control_modules::muonchambers::RofsTask",
+        "moduleName": "QcMuonChambers",
+        "detectorName": "MCH",
+        "cycleDurationSeconds": "60",
+        "maxNumberCycles": "-1",
+        "dataSource": {
+          "type": "direct",
+          "query": "digits:MCH/F-DIGITS;rofs:MCH/TC-F-DIGITROFS"
+        },
+        "taskParameters": {
+          "Diagnostic": "false"
+        },
+        "saveObjectsToFile": "qc-mch-rofs-filtered.root",
+        "location": "remote"
+      },
+      "MCHPreclusters": {
+        "active": "true",
+        "taskName": "Preclusters",
+        "className": "o2::quality_control_modules::muonchambers::PreclustersTask",
+        "moduleName": "QcMuonChambers",
+        "detectorName": "MCH",
+        "cycleDurationSeconds": "60",
+        "maxNumberCycles": "-1",
+        "dataSource": {
+          "type": "direct",
+          "query": "preclusters:MCH/PRECLUSTERS/0;preclusterdigits:MCH/PRECLUSTERDIGITS/0"
+        },
+        "saveObjectsToFile": "qc-mch-preclusters.root",
+        "location": "remote"
+      }
+    },
+    "postprocessing": {
+      "Digits": {
+        "active": "true",
+        "className": "o2::quality_control_modules::muonchambers::DigitsPostProcessing",
+        "moduleName": "QcMuonChambers",
+        "detectorName": "MCH",
+        "customization": [
+          {
+            "name": "FullHistos",
+            "value": "0"
+          },
+          {
+            "name": "ChannelRateMin",
+            "value": "0.00001"
+          },
+          {
+            "name": "ChannelRateMax",
+            "value": "10"
+          },
+          {
+            "name": "ReferenceTimeStamp",
+            "value": "1677760098000"
+          },
+          {
+            "name": "_ReferenceDate",
+            "value": "2022/11/16 16:41:00"
+          }
+        ],
+        "dataSources": [
+          {
+            "type": "repository",
+            "path": "MCH/MO/Digits",
+            "names": [
+              "rate:Occupancy_Elec",
+              "rate_signal:OccupancySignal_Elec",
+              "orbits:DigitOrbitInTF",
+              "orbits_signal:DigitSignalOrbitInTF"
+            ],
+            "reductorName": "o2::quality_control_modules::muonchambers::TH2ElecMapReductor",
+            "moduleName": "QcMuonChambers"
+          }
+        ],
+        "plots": [],
+        "initTrigger": [
+          "userorcontrol"
+        ],
+        "updateTrigger": [
+          "60sec"
+        ],
+        "updateTrigger_": [
+          "newobject:qcdb:MCH/MO/MCHDigitsTask/Occupancy_Elec",
+          "newobject:qcdb:MCH/MO/MCHDigitsTask/OccupancySignal_Elec",
+          "newobject:qcdb:MCH/MO/MCHDigitsTask/DigitOrbitInTF",
+          "newobject:qcdb:MCH/MO/MCHDigitsTask/DigitSignalOrbitInTF"
+        ],
+        "stopTrigger": [
+          "userorcontrol"
+        ]
+      },
+      "Preclusters": {
+        "active": "true",
+        "className": "o2::quality_control_modules::muonchambers::PreclustersPostProcessing",
+        "moduleName": "QcMuonChambers",
+        "detectorName": "MCH",
+        "customization": [
+          {
+            "name": "FullHistos",
+            "value": "0"
+          },
+          {
+            "name": "ReferenceTimeStamp",
+            "value": "1677760200000"
+          },
+          {
+            "name": "_ReferenceDate",
+            "value": "2022/11/16 16:41:00"
+          }
+        ],
+        "dataSources": [
+          {
+            "type": "repository",
+            "path": "MCH/MO/Preclusters",
+            "names": [
+              "eff:Pseudoeff_Elec",
+              "clcharge:ClusterChargeHist",
+              "clsize:ClusterSizeHist"
+            ],
+            "reductorName": "o2::quality_control_modules::muonchambers::TH2ElecMapReductor",
+            "moduleName": "QcMuonChambers"
+          }
+        ],
+        "plots": [],
+        "initTrigger": [
+          "userorcontrol"
+        ],
+        "updateTrigger": [
+          "60sec"
+        ],
+        "stopTrigger": [
+          "userorcontrol"
+        ]
+      },
+      "Quality": {
+        "active": "true",
+        "className": "o2::quality_control_modules::muonchambers::QualityPostProcessing",
+        "moduleName": "QcMuonChambers",
+        "detectorName": "MCH",
+        "dataSources": [
+          {
+            "type": "repository",
+            "path": "MCH/QO",
+            "names": [
+              "decoding:DecodingCheck",
+              "digits:DigitsCheck",
+              "preclusters:PreclustersCheck"
+            ],
+            "reductorName": "o2::quality_control_modules::muonchambers::TH2ElecMapReductor",
+            "moduleName": "QcMuonChambers"
+          },
+          {
+            "type": "repository",
+            "path": "MCH/QO/Aggregator",
+            "name": "mch:MCHQuality",
+            "reductorName": "o2::quality_control_modules::muonchambers::TH2ElecMapReductor",
+            "moduleName": "QcMuonChambers"
+          }
+        ],
+        "plots": [],
+        "initTrigger": [
+          "userorcontrol"
+        ],
+        "updateTrigger": [
+          "60sec"
+        ],
+        "stopTrigger": [
+          "userorcontrol"
+        ]
+      }
+    },
+    "checks": {
+      "DigitsCheck": {
+        "active": "true",
+        "className": "o2::quality_control_modules::muonchambers::DigitsCheck",
+        "moduleName": "QcMuonChambers",
+        "detectorName": "MCH",
+        "policy": "OnAll",
+        "checkParameters": {
+          "MeanRateHistName": "RatesSignal/OnCycle/MeanRate",
+          "MeanRateRatioHistName": "RatesSignal/OnCycle/MeanRateRefRatio",
+          "GoodChanFracHistName": "RatesSignal/OnCycle/GoodChannelsFraction",
+          "GoodChanFracRatioHistName": "RatesSignal/OnCycle/GoodChannelsFractionRefRatio",
+          "MinRate": "0.01",
+          "MaxRate": "1",
+          "MaxRateDelta": "0.1",
+          "MinGoodFraction": "0.9",
+          "MaxGoodFractionDelta": "0.15",
+          "RatePlotScaleMin": "0.0001",
+          "RatePlotScaleMax": "10",
+          "MaxBadDE_ST12": "2",
+          "MaxBadDE_ST345": "5"
+        },
+        "dataSource": [
+          {
+            "type": "PostProcessing",
+            "name": "Digits",
+            "MOs": "all"
+          }
+        ]
+      },
+      "PreclustersCheck": {
+        "active": "true",
+        "className": "o2::quality_control_modules::muonchambers::PreclustersCheck",
+        "moduleName": "QcMuonChambers",
+        "detectorName": "MCH",
+        "policy": "OnAny",
+        "checkParameters": {
+          "MinEfficiency": "0.8",
+          "MaxEfficiencyDelta": "0.1",
+          "PseudoeffPlotScaleMin": "0.0",
+          "PseudoeffPlotScaleMax": "1.2"
+        },
+        "dataSource": [
+          {
+            "type": "PostProcessing",
+            "name": "Preclusters",
+            "MOs": "all"
+          }
+        ]
+      }
+    },
+    "aggregators": {
+      "Aggregator": {
+        "active": "true",
+        "className": "o2::quality_control_modules::muonchambers::MCHAggregator",
+        "moduleName": "QcMuonChambers",
+        "policy": "OnAll",
+        "detectorName": "MCH",
+        "dataSource": [
+          {
+            "type": "Check",
+            "name": "DigitsCheck"
+          },
+          {
+            "type": "Check",
+            "name": "PreclustersCheck"
+          }
+        ]
+      }
+    },
+    "externalTasks": null
+  },
+  "dataSamplingPolicies": []
+}

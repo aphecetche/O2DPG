@@ -33,32 +33,12 @@
                 "maxNumberCycles": "-1",
                 "dataSource": {
                     "type": "direct",
-                    "query": "digits:MCH/DIGITS/0"
+                    "query": "digits:MCH/DIGITS"
                 },
                 "taskParameters": {
-                    "Diagnostic": "false"
+                    "Diagnostic": "false",
+                    "OnCycle": "true"
                 }
-            }
-        },
-        "checks": {
-            "MCHDigits": {
-                "active": "true",
-                "checkName": "Digits",
-                "className": "o2::quality_control_modules::muonchambers::PhysicsCheck",
-                "moduleName": "QcMuonChambers",
-                "policy": "OnAny",
-                "detectorName": "MCH",
-                "checkParameters": {
-                    "MinOccupancy": "0.00001",
-                    "MaxOccupancy": "10.0"
-                },
-                "dataSource": [
-                    {
-                        "type": "Task",
-                        "name": "MCHDigits",
-                        "MOs": "all"
-                    }
-                ]
             }
         }
     }

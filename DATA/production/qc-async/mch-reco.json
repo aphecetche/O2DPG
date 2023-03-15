@@ -24,21 +24,56 @@
         },
         "tasks": {
             "MCHRofs": {
+                "//": "legacy, to be removed once PR1526 is merged",
                 "active": "true",
                 "taskName": "ROFs",
                 "className": "o2::quality_control_modules::muonchambers::PhysicsTaskRofs",
                 "moduleName": "QcMuonChambers",
                 "detectorName": "MCH",
-                "cycleDurationSeconds": "300",
+                "cycleDurationSeconds": "60",
                 "maxNumberCycles": "-1",
                 "dataSource": {
                     "type": "direct",
                     "query": "digits:MCH/DIGITS;rofs:MCH/DIGITROFS"
                 }
             },
-            "MCHPreclusters": {
+            "Rofs": {
                 "active": "true",
-                "taskName": "Preclusters",
+                "className": "o2::quality_control_modules::muonchambers::RofsTask",
+                "moduleName": "QcMuonChambers",
+                "detectorName": "MCH",
+                "cycleDurationSeconds": "60",
+                "maxNumberCycles": "-1",
+                "dataSource": {
+                    "type": "direct",
+                    "query": "digits:MCH/DIGITS;rofs:MCH/DIGITROFS"
+                },
+                "taskParameters": {
+                    "Diagnostic": "false"
+                },
+                "saveObjectsToFile": "qc-mch-rofs.root",
+                "location": "remote"
+            },
+            "FRofs": {
+                "active": "true",
+                "className": "o2::quality_control_modules::muonchambers::RofsTask",
+                "moduleName": "QcMuonChambers",
+                "detectorName": "MCH",
+                "cycleDurationSeconds": "60",
+                "maxNumberCycles": "-1",
+                "dataSource": {
+                    "type": "direct",
+                    "query": "digits:MCH/F-DIGITS;rofs:MCH/TC-F-DIGITROFS"
+                },
+                "taskParameters": {
+                    "Diagnostic": "false"
+                },
+                "saveObjectsToFile": "qc-mch-rofs-filtered.root",
+                "location": "remote"
+            },
+            "MCHPreclustersOld": {
+                "active": "true",
+                "taskName": "PreclustersOld",
                 "className": "o2::quality_control_modules::muonchambers::PhysicsTaskPreclusters",
                 "moduleName": "QcMuonChambers",
                 "detectorName": "MCH",
@@ -48,23 +83,19 @@
                     "type": "direct",
                     "query": "preclusters:MCH/PRECLUSTERS/0;preclusterdigits:MCH/PRECLUSTERDIGITS/0"
                 }
-            }
-        },
-        "checks": {
+            },
             "MCHPreclusters": {
                 "active": "true",
-                "checkName": "Preclusters",
-                "className": "o2::quality_control_modules::muonchambers::PhysicsPreclustersCheck",
+                "taskName": "Preclusters",
+                "className": "o2::quality_control_modules::muonchambers::PreclustersTask",
                 "moduleName": "QcMuonChambers",
                 "detectorName": "MCH",
-                "policy": "OnAny",
-                "dataSource": [
-                    {
-                        "type": "Task",
-                        "name": "MCHPreclusters",
-                        "MOs": "all"
-                    }
-                ]
+                "cycleDurationSeconds": "60",
+                "maxNumberCycles": "-1",
+                "dataSource": {
+                    "type": "direct",
+                    "query": "preclusters:MCH/PRECLUSTERS/0;preclusterdigits:MCH/PRECLUSTERDIGITS/0"
+                }
             }
         }
     }

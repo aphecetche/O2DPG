@@ -19,7 +19,7 @@
                 "url": ""
             },
             "conditionDB": {
-                "url": ""
+                "url": "https://alice-ccdb.cern.ch"
             }
         },
         "tasks": {
@@ -38,6 +38,32 @@
                 "taskParameters": {
                     "maxTracksPerTF": "600",
                     "GID": "MCH"
+                },
+                "grpGeomRequest": {
+                    "geomRequest": "Aligned",
+                    "askGRPECS": "false",
+                    "askGRPLHCIF": "false",
+                    "askGRPMagField": "false",
+                    "askMatLUT": "false",
+                    "askTime": "false",
+                    "askOnceAllButField": "false",
+                    "needPropagatorD": "false"
+                }
+            },
+            "MCHTracks2": {
+                "active": "true",
+                "taskName": "TracksOld",
+                "className": "o2::quality_control_modules::muonchambers::TracksTask",
+                "moduleName": "QcMuonChambers",
+                "detectorName": "MCH",
+                "cycleDurationSeconds": "180",
+                "maxNumberCycles": "-1",
+                "dataSource": {
+                    "type": "direct",
+                    "query": "tracks:MCH/TRACKS;trackrofs:MCH/TRACKROFS;trackclusters:MCH/TRACKCLUSTERS"
+                },
+                "taskParameters": {
+                    "maxTracksPerTF": "600"
                 },
                 "grpGeomRequest": {
                     "geomRequest": "Aligned",
